@@ -36,7 +36,8 @@ def get_data(file_name):
     # avg_t1 = []
     # avg_t2 = []
     # avg_t3 = []
-    # for t0, t1, t2, t3 in zip(data['t0'], data['t1'], data['t2'], data['t3']):
+    # for t0, t1, t2, t3 in zip(data['t0'], data['t1'],
+    #   data['t2'], data['t3']):
     #     avg_t0.append(float(t0))
     #     avg_t1.append(float(t1))
     #     avg_t2.append(float(t2))
@@ -46,13 +47,16 @@ def get_data(file_name):
     avg_t2 = [float(t2) for t2 in data['t2']]
     avg_t3 = [float(t3) for t3 in data['t3']]
 
-    X_parameter.extend([[data['weight'][0] / 30], [data['weight']
-                                                   [0] / 30 * 0.75], [data['weight'][0] / 30 * 0.6]])
-    Y_parameter.extend([(average(avg_t1) / average(avg_t0)) - 1, (average(avg_t2) / average(avg_t0)) - 1,
+    X_parameter.extend([[data['weight'][0] / 30],
+                        [data['weight'][0] / 30 * 0.75],
+                        [data['weight'][0] / 30 * 0.6]])
+    Y_parameter.extend([(average(avg_t1) / average(avg_t0)) - 1,
+                        (average(avg_t2) / average(avg_t0)) - 1,
                         (average(avg_t3) / average(avg_t0) - 1)])
     Y_parameter = np.array(Y_parameter)
     Y_parameter = (np.array(Y_parameter) / np.array(X_parameter).reshape(3, ))
-    Z_parameter.extend([math.log(average(avg_t1) / average(avg_t0)), math.log(average(avg_t2) / average(avg_t0)),
+    Z_parameter.extend([math.log(average(avg_t1) / average(avg_t0)),
+                        math.log(average(avg_t2) / average(avg_t0)),
                         math.log(average(avg_t3) / average(avg_t0))])
     Z_parameter = (np.array(Z_parameter) / np.array(X_parameter).reshape(3, ))
     return X_parameter, Y_parameter, Z_parameter
@@ -68,17 +72,23 @@ def show_linear_line(X_parameters, Y_parameters, Z_parameters):
 
     fig = plt.figure(figsize=(10, 6))
     ax = fig.add_subplot(111)
-    ax.text(0.015, 10, r'$ \ y_1=$' + str(round(regr.coef_[0], 4)) + 'x' + '+' + str(round(regr.intercept_, 4)),
-            fontsize=15)
+    ax.text(0.015, 10, r'$ \ y_1=$' + str(round(regr.coef_[0], 4)) +
+            'x' + '+' +
+            str(round(regr.intercept_, 4)), fontsize=15)
     ax.text(0.017, 9.9, r"$ \ R_1^2=$" +
             str(round(regr.score(X_parameters, Y_parameters), 4)), fontsize=15)
-    ax.text(0.015, 8.8, r'$ \ y_2=$' + str(round(regr1.coef_[0], 4)) + 'x' + '+' + str(round(regr1.intercept_, 4)),
+    ax.text(0.015, 8.8, r'$ \ y_2=$' +
+            str(round(regr1.coef_[0], 4)) + 'x' + '+' +
+            str(round(regr1.intercept_, 4)),
             fontsize=15)
     ax.text(0.017, 8.7, r"$ \ R_2^2=$" +
-            str(round(regr1.score(X_parameters, Z_parameters), 4)), fontsize=15)
-    ax.text(0.001, 10, r'$ \bar M=(\frac{[\eta]}{K})^{1/\alpha}$=' + str(
-        round(math.pow((regr1.intercept_ * regr.coef_[0] - regr.intercept_ * regr1.coef_[0]) / (
-            regr.coef_[0] - regr1.coef_[0]) / 1.166 * 100, 1 / 0.871), 2)), fontsize=20)
+            str(round(regr1.score(X_parameters, Z_parameters), 4)),
+            fontsize=15)
+    ax.text(0.001, 10, r'$ \bar M=(\frac{[\eta]}{K})^{1/\alpha}$=' +
+            str(round(math.pow((regr1.intercept_ * regr.coef_[0] -
+                                regr.intercept_ * regr1.coef_[0]) /
+                               (regr.coef_[0] - regr1.coef_[0]) /
+                               1.166 * 100, 1 / 0.871), 2)), fontsize=20)
     plt.scatter(X_parameters, Y_parameters,
                 marker='s', color='b', linewidths=2)
     plt.scatter(X_parameters, Z_parameters,
